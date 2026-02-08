@@ -1,5 +1,6 @@
 INIT_DIR=$(pwd)
+SCRIPT_DIR=$(dirname $0)
 
-cd buildroot
+cd "${SCRIPT_DIR}/buildroot"
 make distclean
-cd $(INIT_DIR)
+cd ${INIT_DIR}
