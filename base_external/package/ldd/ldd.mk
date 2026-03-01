@@ -21,6 +21,7 @@ define LDD_BUILD_CMDS
 endef
 
 define LDD_INSTALL_TARGET_CMDS
+	$(INSTALL) -m 755 -d $(TARGET_DIR)/lib/modules
 	find $(@D) -name "*.ko" | xargs -I{} $(INSTALL) -m 755 {} $(TARGET_DIR)/lib/modules
 endef
 
