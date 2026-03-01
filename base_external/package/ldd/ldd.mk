@@ -21,8 +21,7 @@ define LDD_BUILD_CMDS
 endef
 
 define LDD_INSTALL_TARGET_CMDS
-	$(INSTALL) -d 0755 $(TARGET_DIR)/etc/custom-drivers
-	find $(@D) -name "*.ko" | xargs -I{} $(INSTALL) -m 755 {} $(TARGET_DIR)/etc/custom-drivers
+	find $(@D) -name "*.ko" | xargs -I{} $(INSTALL) -m 755 {} $(TARGET_DIR)/lib/modules
 endef
 
 $(eval $(kernel-module))
