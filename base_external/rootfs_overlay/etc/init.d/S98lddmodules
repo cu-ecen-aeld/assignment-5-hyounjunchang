@@ -8,12 +8,14 @@ module_load() {
     module=$1
     # Use the same name for the device as the name used for the module
     device=$1
+    module_file=$2
+
     # Support read/write for owner and group, read only for everyone using 644
     mode="664"
 
-    if [ $# -ne 1 ]; then
+    if [ $# -ne 2 ]; then
         echo "Wrong number of arguments"
-        echo "usage: $0 module_name"
+        echo "usage: $0 module_name module_file"
         echo "Will create a corresponding device /dev/module_name associated with module_name.ko"
         exit 1
     fi
@@ -28,7 +30,7 @@ module_load() {
     fi
 
     echo "Load our module, exit on failure"
-    insmod ./$module.ko $* || exit 1
+    insmod $module_file || exit 1
     echo "Get the major number (allocated with allocate_chrdev_region) from /proc/devices"
     major=$(awk "\$2==\"$module\" {print \$1}" /proc/devices)
     if [ ! -z ${major} ]; then
@@ -79,7 +81,7 @@ scull_load(){
 
     # invoke insmod with all arguments we got
     # and use a pathname, as insmod doesn't look in . by default
-    insmod ./$scull_location $* || exit 1
+    insmod $scull_location || exit 1
 
     # retrieve major number
     major=$(awk "\$2==\"$module\" {print \$1}" /proc/devices)
@@ -146,9 +148,9 @@ scull_unload(){
 case "$1" in 
     start)
         echo "Setting up hello, faulty, and scull..."
-        module_load /lib/modules/hello.ko
-        module_load /lib/modules/faulty.ko
-        scull_load /lib/modules/scull.ko
+        module_load hello /lib/modules/a7/hello.ko
+        module_load faulty /lib/modules/a7/faulty.ko
+        scull_load /lib/modules/a7/scull.ko
         ;;
     stop)
         echo "Closing hello, faulty, and scull..."
